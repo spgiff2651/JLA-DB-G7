@@ -1,0 +1,37 @@
+Stephen P. Gifford, CSCI4200-DB, FALL 2018, Lexical Analyzer
+********************************************************
+Next token is: LEFT_PAREN     Next lexeme is (
+Next token is: INT_LIT        Next lexeme is 47
+Next token is: ADD_OP         Next lexeme is +
+Next token is: IDENT          Next lexeme is sum
+Next token is: RIGHT_PAREN    Next lexeme is )
+Next token is: DIV_OP         Next lexeme is /
+Next token is: IDENT          Next lexeme is total
+Next token is: END_OF_FILE    Next lexeme is 
+********************************************************
+Next token is: IDENT          Next lexeme is Area
+Next token is: ASSIGN_OP      Next lexeme is =
+Next token is: LEFT_PAREN     Next lexeme is (
+Next token is: IDENT          Next lexeme is length
+Next token is: ADD_OP         Next lexeme is +
+Next token is: IDENT          Next lexeme is width
+Next token is: RIGHT_PAREN    Next lexeme is )
+Next token is: MULT_OP        Next lexeme is *
+Next token is: INT_LIT        Next lexeme is 2
+Next token is: END_OF_FILE    Next lexeme is 
+********************************************************
+Next token is: IDENT          Next lexeme is C
+Next token is: ASSIGN_OP      Next lexeme is =
+Next token is: IDENT          Next lexeme is age
+Next token is: SUB_OP         Next lexeme is -
+Next token is: INT_LIT        Next lexeme is 5
+Next token is: MULT_OP        Next lexeme is *
+Next token is: LEFT_PAREN     Next lexeme is (
+Next token is: IDENT          Next lexeme is D
+Next token is: DIV_OP         Next lexeme is /
+Next token is: IDENT          Next lexeme is C
+Next token is: RIGHT_PAREN    Next lexeme is )
+********************************************************
+Next token is: END_OF_FILE    Next lexeme is EOF
+********************************************************
+********************************************************

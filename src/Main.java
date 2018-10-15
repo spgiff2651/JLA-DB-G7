@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -13,6 +11,8 @@ public class Main
     private static int lexLen, token;
     private static char nextChar;
     private static char[] lexeme = new char[100];
+    static FileInputStream in_fp;
+    static File file;
 
     /* Character classes */
     /* Katie's help, setting classes and tokens to FINAL */
@@ -49,31 +49,49 @@ public class Main
 
     /****************************************************************************************/
     /* Main Driver */
-    public static void main(String[] args) throws FileNotFoundException
+    public static void main(String[] args) throws Exception
     {
        try
         {
-            Scanner scan = new Scanner(new File("src\\lextest.txt"),"UTF-8");
-            input = scan.nextLine();
-            lexeme = input.toCharArray();
+            lexLen = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                lexeme[i] = '0';
+            }
+
+            file = new File("src\\lextest.txt");
+            in_fp = new FileInputStream(file);
 
             writer.println("Stephen P. Gifford, CSCI4200-DB, FALL 2018, Lexical Analyzer");
-            writer.println("******************************************************** \n");
+            writer.println("********************************************************");
             System.out.println("Stephen P. Gifford, CSCI4200-DB, FALL 2018, Lexical Analyzer");
-            System.out.println("******************************************************** \n");
+            System.out.println("********************************************************");
 
-            if (lexeme.length == 0)
-                System.out.println("ERROR! No data in file.");
-            else
+            Scanner scan = new Scanner(new File("src\\lextest.txt"));
+            while (scan.hasNextLine())
             {
-                getChar();
-                while(nextToken != EOF)
-                    lex();
+                System.out.println(scan.nextLine());
+
+                if (!(file.exists()))
+                {
+                    System.out.println("ERROR! No data in file.");
+                }
+                else
+                {
+                    getChar();
+                    while(nextToken != EOF)
+                        lex();
+                    nextToken = "";
+                }
+
+
+                writer.println("********************************************************");
+                System.out.println("********************************************************");
             }
 
             System.out.println();
             System.out.println("Lexical analysis of the program is complete!");
-            scan.close();
+            //scan.close();
             writer.close();
         }
 
@@ -131,6 +149,11 @@ public class Main
                 nextToken = DIV_OP;
                 break;
 
+            case '=':
+                addChar();
+                nextToken = ASSIGN_OP;
+                break;
+
             default:
                 addChar();
                 nextToken = EOF;
@@ -161,22 +184,26 @@ public class Main
     /****************************************************************************************/
     /* getChar - A function to get the next character of input and determine its character class */
 
-    public static void getChar()
+    public static void getChar() throws IOException
     {
-        if (lexeme[lexLen] != 0)
+        if (in_fp.available() > 0)
         {
-            nextChar = lexeme[token];
-            token++;
+            nextChar = (char)in_fp.read();
             if (Character.isLetter(nextChar))
+            {
                 charClass = LETTER;
+            }
             else if (Character.isDigit(nextChar))
+            {
                 charClass = DIGIT;
+            }
             else
+            {
                 charClass = UNKNOWN;
+            }
         }
         else
         {
-            System.out.println("Else EOF");
             charClass = EOF;
         }
     }
@@ -184,7 +211,7 @@ public class Main
     /****************************************************************************************/
     /* getNonBlack - a function to call getChar until it returns a non-whitespace character */
 
-    public static void getNonBlank()
+    public static void getNonBlank() throws IOException
     {
         while(Character.isSpaceChar(nextChar))
             getChar();
@@ -193,7 +220,7 @@ public class Main
     /****************************************************************************************/
     /* lex - a simple lexical analyzer for arithmetic expressions */
 
-    public static String lex()
+    public static String lex() throws IOException
     {
         lexLen = 0;
         getNonBlank();
@@ -233,8 +260,8 @@ public class Main
             /* EOF */
             /* Katie's help add sys.out line */
             case EOF:
-                writer.println("\n ********************************************************");
-                System.out.println("\n ********************************************************");
+                writer.println("********************************************************");
+                System.out.println("********************************************************");
                 nextToken = EOF;
                 lexeme[0] = 'E';
                 lexeme[1] = 'O';
@@ -244,19 +271,22 @@ public class Main
         } /* End of Switch */
 
         /* Katie's Loop for printing tokens */
-        writer.print("Next token is: " + nextToken + ", Next lexeme is ");
-        System.out.print("Next token is: " + nextToken + ", Next lexeme is ");
+        writer.printf("%-10s%-15s%-10s","Next token is: ",nextToken,"Next lexeme is ");
+        System.out.printf("%-10s%-15s%-10s","Next token is: ",nextToken,"Next lexeme is ");
 
         for (int i = 0; i < lexLen; i++)
         {
             for (int j = 0; j < lexLen; j++)
             {
-                writer.println(lexeme[j]);
-                System.out.println(lexeme[j]);
+                writer.print(lexeme[j]);
+                System.out.print(lexeme[j]);
             }
+            writer.println();
+            System.out.println();
             return nextToken;
         }
 
+        /* EOF */
         for (int i = 0; i < 3; i++)
         {
             writer.print(lexeme[i]);
@@ -264,7 +294,9 @@ public class Main
         }
 
         writer.println();
+        writer.println("********************************************************");
         System.out.println();
+        System.out.println("********************************************************");
 
         return EOF;
     } /* End of Funtion Lex */
